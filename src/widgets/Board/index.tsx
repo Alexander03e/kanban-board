@@ -1,5 +1,5 @@
 import { Column } from "@/features/Column";
-import styles from "./board.module.css";
+import styles from "./board.module.scss";
 
 export const Board = () => {
     return (

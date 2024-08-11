@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styles from "./column.module.css";
+import styles from "./column.module.scss";
 import { Card } from "../Card";
 
 interface IProps {

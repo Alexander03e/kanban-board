@@ -1,0 +1,49 @@
+.wrapper {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--general-padding);
+
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+
+    /* border: 1px solid red; */
+    margin-left: var(--general-padding);
+
+    /* border: 1px solid #000000; */
+    padding: var(--general-padding);
+
+    border-top: none;
+
+    /* background-color: red; */
+}
+
+.column-heading {
+    position: sticky;
+    z-index: 2;
+    top: 2.25em;
+
+    margin: calc(var(--general-padding)*-1);
+    margin-bottom: var(--general-padding);
+    padding: var(--general-padding);
+
+    text-align: center;
+
+    background-color: white;
+    filter: blur(0.4);
+    backdrop-filter: opacity(0.2);
+    border: 1px solid blue;
+}
+
+.column-heading::before {
+    content: "";
+
+    position: absolute;
+    top: -1px;
+    left: calc(var(--general-padding)*-1 - 1px);
+
+    width: calc(var(--general-padding)*1);
+    height: 100%;
+}

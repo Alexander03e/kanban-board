@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes } from "react";
-import styles from "./container.module.css";
+import styles from "./container.module.scss";
 
 interface IProps extends HTMLAttributes<HTMLDivElement> {}
 

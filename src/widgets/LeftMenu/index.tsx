@@ -1,4 +1,4 @@
-import styles from "./leftMenu.module.css";
+import styles from "./leftMenu.module.scss";
 import { FC, HTMLAttributes } from "react";
 
 interface IProps extends HTMLAttributes<HTMLDivElement> {}
