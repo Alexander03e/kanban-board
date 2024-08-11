@@ -1,0 +1,23 @@
+.wrapper {
+    /* border: 1px solid #ff0000; */
+    height: 850px;
+    position: relative;
+    overflow: scroll;
+    width: 100%;
+}
+
+.column-wrapper {
+    display: flex;
+    height: 100%;
+    gap: 10px;
+}
+
+.board-heading {
+    width: 100%;
+    top: 0;
+    position: sticky;
+    z-index: 2;
+    /* border: 1px solid darkblue; */
+    padding: var(--general-padding);
+    background-color: rgb(88, 88, 206);
+}
