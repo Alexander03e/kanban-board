@@ -7,8 +7,8 @@ import {
 } from "react";
 import styles from "./card.module.scss";
 import cn from "classnames";
-import { useMoveElement } from "@/hooks/useMoveElement";
-import { useMergeRefs } from "@/hooks/useMergeRefs";
+import { useMergeRefs } from "@/shared/hooks/useMergeRefs";
+import { useMoveElement } from "@/shared/hooks/useMoveElement";
 
 interface IProps {}
 

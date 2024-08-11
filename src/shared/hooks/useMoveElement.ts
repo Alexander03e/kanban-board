@@ -10,11 +10,16 @@ export const useMoveElement = <T extends HTMLElement>(
 ) => {
     const [isPressed, setIsPressed] = useState(false);
     const [position, setPosition] = useState<Point>({ x: 0, y: 0 });
-    const startPointerPosition = useRef<{ top: number; left: number }>();
+
+    const startPointerPosition = useRef<{
+        top: number;
+        left: number;
+        absoluteLeft: number;
+        absoluteTop: number;
+    }>();
     const originWidth = useRef<{ width: number; height: number }>();
 
     const mouseStart = (e: PointerEvent) => {
-        console.log("test");
         setIsPressed(true);
 
         const clientCoords = ref.current.getBoundingClientRect();
@@ -22,6 +27,8 @@ export const useMoveElement = <T extends HTMLElement>(
         startPointerPosition.current = {
             left: clientCoords.left - e.clientX,
             top: clientCoords.top - e.clientY,
+            absoluteLeft: clientCoords.left,
+            absoluteTop: clientCoords.top,
         };
 
         originWidth.current = {
@@ -36,10 +43,10 @@ export const useMoveElement = <T extends HTMLElement>(
     const mouseMove = (e: MouseEvent) => {
         if (!startPointerPosition.current) return;
 
-        setPosition((prev) => ({
-            x: e.movementX + prev.x,
-            y: e.movementY + prev.y,
-        }));
+        // setPosition((prev) => ({
+        //     x: e.movementX + prev.x,
+        //     y: e.movementY + prev.y,
+        // }));
 
         ref.current.style.top =
             e.clientY + startPointerPosition.current.top + "px";
@@ -48,16 +55,22 @@ export const useMoveElement = <T extends HTMLElement>(
 
         ref.current.style.position = "fixed";
 
+        // const elementUnderCard = document.elementFromPoint(e.clientX + )
         // console.log(e.target)
     };
 
-    const mouseEnd = () => {
+    const mouseEnd = (e: PointerEvent) => {
         setIsPressed(false);
-    };
 
-    // const togglePressed = () => {
-    //     setIsPressed((prev) => !prev);
-    // };
+        // if (ref.current) {
+        //     ref.current.style.top =
+        //         startPointerPosition?.current?.absoluteTop + "px";
+        //     ref.current.style.left =
+        //         startPointerPosition?.current?.absoluteLeft + "px";
+        // }
+
+        // console.log(e);
+    };
 
     useEffect(() => {
         if (ref) {

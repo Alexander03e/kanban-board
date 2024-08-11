@@ -8,16 +8,9 @@
     width: 100%;
     max-width: 400px;
     height: 100%;
-
-    /* border: 1px solid red; */
-    margin-left: var(--general-padding);
-
-    /* border: 1px solid #000000; */
     padding: var(--general-padding);
 
     border-top: none;
-
-    /* background-color: red; */
 }
 
 .column-heading {
@@ -30,8 +23,8 @@
     padding: var(--general-padding);
 
     text-align: center;
-
-    background-color: white;
+    
+    background-color: var(--primary-color);
     filter: blur(0.4);
     backdrop-filter: opacity(0.2);
     border: 1px solid blue;
