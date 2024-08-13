@@ -1,41 +1,43 @@
-import {
-    forwardRef,
-    MutableRefObject,
-    ReactElement,
-    RefObject,
-    useRef,
-} from "react";
+import { forwardRef, ReactElement, RefObject } from "react";
 import styles from "./card.module.scss";
 import cn from "classnames";
-import { useMergeRefs } from "@/shared/hooks/useMergeRefs";
-import { useMoveElement } from "@/shared/hooks/useMoveElement";
 
-interface IProps {}
+import { DragElement } from "../Drag/components/DragElement";
+import { useAppDispatch } from "@/shared/hooks/redux";
+import { changeColumn } from "@/shared/store/board/slice";
+
+interface IProps {
+    id: number;
+    columnId: number;
+    label: string;
+}
 
 export const Card = forwardRef<HTMLDivElement, IProps>(
-    ({ ...props }, ref): ReactElement => {
-        const cardRef = useRef<HTMLDivElement>(null);
+    ({ id, columnId, label }): ReactElement => {
+        const dispatch = useAppDispatch();
 
-        const { isPressed, position } = useMoveElement<HTMLDivElement>(
-            cardRef as MutableRefObject<HTMLDivElement>
-        );
-
-        const mergeRef = useMergeRefs<HTMLDivElement>(
-            cardRef,
-            ref as RefObject<HTMLDivElement>
-        );
+        const onDrop = (columnId: number) => {
+            dispatch(changeColumn({ id, columnId }));
+            // console.log(`dropped ${columnId}`);
+        };
 
         return (
-            <div
-                id="card"
-                className={cn(styles.card, { [styles.dragging]: isPressed })}
-                ref={mergeRef}
-                {...props}
-            >
-                {String(isPressed)}
-                X: {position.x}
-                Y: {position.y}
-            </div>
+            <DragElement onDrop={onDrop}>
+                {({ isPressed, ref, ...props }) => (
+                    <div
+                        className={cn(styles.card, {
+                            [styles.dragging]: isPressed,
+                        })}
+                        ref={ref as RefObject<HTMLDivElement>}
+                        {...props}
+                    >
+                        {String(isPressed)}
+                        {label}
+                        {columnId}
+                        id: {id}
+                    </div>
+                )}
+            </DragElement>
         );
     }
 );

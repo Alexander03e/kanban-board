@@ -13,10 +13,11 @@
     border-radius: 8px;
     box-shadow: 0 1px 0 1px rgb(34 60 80 / 20%);
 
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, y 0.2s;
 
     &.dragging {
         pointer-events: none;
+        z-index: 2;
         box-shadow: 0 2px 3px 3px rgb(0 0 0 / 20%);
     }
 }

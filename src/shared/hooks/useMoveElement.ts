@@ -1,15 +1,16 @@
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-
-type Point = { x: number; y: number };
+import { useAppDispatch } from "./redux";
+import { setDraggable } from "../store/board/slice";
 
 /**
  * Хук для перетаскивания элементов и отслеживания его координат.
  */
 export const useMoveElement = <T extends HTMLElement>(
-    ref: MutableRefObject<T>
+    ref: MutableRefObject<T>,
+    onDrop: (columnId: number) => void
 ) => {
+    const dispatch = useAppDispatch();
     const [isPressed, setIsPressed] = useState(false);
-    const [position, setPosition] = useState<Point>({ x: 0, y: 0 });
 
     const startPointerPosition = useRef<{
         top: number;
@@ -21,6 +22,7 @@ export const useMoveElement = <T extends HTMLElement>(
 
     const mouseStart = (e: PointerEvent) => {
         setIsPressed(true);
+        dispatch(setDraggable(true));
 
         const clientCoords = ref.current.getBoundingClientRect();
 
@@ -43,33 +45,39 @@ export const useMoveElement = <T extends HTMLElement>(
     const mouseMove = (e: MouseEvent) => {
         if (!startPointerPosition.current) return;
 
-        // setPosition((prev) => ({
-        //     x: e.movementX + prev.x,
-        //     y: e.movementY + prev.y,
-        // }));
+        const { left, top } = startPointerPosition.current;
 
-        ref.current.style.top =
-            e.clientY + startPointerPosition.current.top + "px";
-        ref.current.style.left =
-            e.clientX + startPointerPosition.current.left + "px";
+        ref.current.style.top = e.clientY + top + "px";
+        ref.current.style.left = e.clientX + left + "px";
 
         ref.current.style.position = "fixed";
-
-        // const elementUnderCard = document.elementFromPoint(e.clientX + )
-        // console.log(e.target)
     };
 
     const mouseEnd = (e: PointerEvent) => {
         setIsPressed(false);
+        dispatch(setDraggable(true));
 
-        // if (ref.current) {
-        //     ref.current.style.top =
-        //         startPointerPosition?.current?.absoluteTop + "px";
-        //     ref.current.style.left =
-        //         startPointerPosition?.current?.absoluteLeft + "px";
-        // }
+        if (ref.current) {
+            ref.current.style.top =
+                startPointerPosition?.current?.absoluteTop + "px";
+            ref.current.style.left =
+                startPointerPosition?.current?.absoluteLeft + "px";
+        }
 
-        // console.log(e);
+        const elementUnderCard = document.elementFromPoint(
+            e.clientX,
+            e.clientY
+        );
+
+        const columnId = elementUnderCard
+            ?.closest("[dropContainerId]")
+            ?.getAttribute("dropContainerId");
+
+        ref.current.style.position = "relative";
+
+        if (!columnId) return;
+        console.log(columnId);
+        onDrop(Number(columnId));
     };
 
     useEffect(() => {
@@ -90,5 +98,5 @@ export const useMoveElement = <T extends HTMLElement>(
         };
     }, [isPressed]);
 
-    return { position, isPressed };
+    return { isPressed };
 };
