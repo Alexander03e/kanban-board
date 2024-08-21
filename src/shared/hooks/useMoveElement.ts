@@ -1,6 +1,15 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import {
+    MutableRefObject,
+    PointerEventHandler,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { useAppDispatch } from "./redux";
 import { setDraggable } from "../store/board/slice";
+import { getElementUnder } from "../utils/getElementUnder";
+import { DROP_TAG } from "../enums/drag";
 
 /**
  * Хук для перетаскивания элементов и отслеживания его координат.
@@ -20,8 +29,15 @@ export const useMoveElement = <T extends HTMLElement>(
     }>();
     const originWidth = useRef<{ width: number; height: number }>();
 
-    const mouseStart = (e: PointerEvent) => {
+    const initialColumnId = useRef<string>(null);
+
+    const mouseStart: PointerEventHandler<HTMLElement> = useCallback((e) => {
+        const { columnId } = getElementUnder(e, DROP_TAG.DROP_CONTAINER);
+
+        initialColumnId.current = columnId;
+
         setIsPressed(true);
+        console.log("test");
         dispatch(setDraggable(true));
 
         const clientCoords = ref.current.getBoundingClientRect();
@@ -40,51 +56,37 @@ export const useMoveElement = <T extends HTMLElement>(
 
         ref.current.style.width = originWidth.current.width + "px";
         ref.current.style.height = originWidth.current.height + "px";
-    };
 
-    const mouseMove = (e: MouseEvent) => {
-        if (!startPointerPosition.current) return;
+        ref.current.style.position = "fixed";
 
         const { left, top } = startPointerPosition.current;
 
         ref.current.style.top = e.clientY + top + "px";
         ref.current.style.left = e.clientX + left + "px";
+    }, []);
 
-        ref.current.style.position = "fixed";
-    };
+    const mouseMove = useCallback((e: MouseEvent) => {
+        if (!ref.current || !startPointerPosition.current) return;
+
+        const { left, top } = startPointerPosition.current;
+
+        ref.current.style.top = e.clientY + top + "px";
+        ref.current.style.left = e.clientX + left + "px";
+    }, []);
 
     const mouseEnd = (e: PointerEvent) => {
         setIsPressed(false);
-        dispatch(setDraggable(true));
+        dispatch(setDraggable(false));
 
-        if (ref.current) {
-            ref.current.style.top =
-                startPointerPosition?.current?.absoluteTop + "px";
-            ref.current.style.left =
-                startPointerPosition?.current?.absoluteLeft + "px";
+        const { columnId } = getElementUnder(e, DROP_TAG.DROP_CONTAINER);
+
+        if (initialColumnId.current === columnId || !columnId) {
+            ref.current.style.position = "initial";
+            return;
         }
 
-        const elementUnderCard = document.elementFromPoint(
-            e.clientX,
-            e.clientY
-        );
-
-        const columnId = elementUnderCard
-            ?.closest("[dropContainerId]")
-            ?.getAttribute("dropContainerId");
-
-        ref.current.style.position = "relative";
-
-        if (!columnId) return;
-        console.log(columnId);
         onDrop(Number(columnId));
     };
-
-    useEffect(() => {
-        if (ref) {
-            ref.current?.addEventListener("pointerdown", mouseStart);
-        }
-    }, [ref]);
 
     useEffect(() => {
         if (isPressed) {
@@ -98,5 +100,5 @@ export const useMoveElement = <T extends HTMLElement>(
         };
     }, [isPressed]);
 
-    return { isPressed };
+    return { isPressed, mouseStart };
 };

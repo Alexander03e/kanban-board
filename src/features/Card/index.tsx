@@ -22,11 +22,12 @@ export const Card = forwardRef<HTMLDivElement, IProps>(
         };
 
         return (
-            <DragElement onDrop={onDrop}>
-                {({ isPressed, ref, ...props }) => (
+            <DragElement columnId={String(columnId)} order={1} onDrop={onDrop}>
+                {({ isPressed, ref, className, ...props }) => (
                     <div
                         className={cn(styles.card, {
                             [styles.dragging]: isPressed,
+                            className,
                         })}
                         ref={ref as RefObject<HTMLDivElement>}
                         {...props}

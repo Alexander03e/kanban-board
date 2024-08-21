@@ -4,3 +4,7 @@ export enum DROP_ID {
     CHECKING = "checking",
     DONE = "done",
 }
+
+export enum DROP_TAG {
+    DROP_CONTAINER = "dropContainerId",
+}
