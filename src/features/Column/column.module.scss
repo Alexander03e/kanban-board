@@ -13,6 +13,12 @@
     border-top: none;
 }
 
+.column-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .column-heading {
     position: sticky;
     z-index: 2;
@@ -28,15 +34,15 @@
     filter: blur(0.4);
     backdrop-filter: opacity(0.2);
     border: 1px solid blue;
-}
 
-.column-heading::before {
-    content: "";
+    &::before {
+        content: "";
 
-    position: absolute;
-    top: -1px;
-    left: calc(var(--general-padding)*-1 - 1px);
+        position: absolute;
+        top: -1px;
+        left: calc(var(--general-padding)*-1 - 1px);
 
-    width: calc(var(--general-padding)*1);
-    height: 100%;
+        width: calc(var(--general-padding)*1);
+        height: 100%;
+    }
 }
