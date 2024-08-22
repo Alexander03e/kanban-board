@@ -30,6 +30,7 @@ export const DragElement: FC<IProps> = ({ children, onDrop, ...props }) => {
         }
     }, [dragRef.current, shadowRef.current, isPressed]);
 
+    
     return (
         <>
             {children({
