@@ -8,7 +8,7 @@ export const Board = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles["board-heading"]}>
-                Kanban board/ testing cherry-pick
+                Kanban board/ testing cherry-pick / testing2
             </div>
             <div className={styles["column-wrapper"]}>
                 {columns.map((item) => (
