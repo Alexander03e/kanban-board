@@ -7,7 +7,9 @@ export const Board = () => {
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles["board-heading"]}>Kanban board</div>
+            <div className={styles["board-heading"]}>
+                Kanban board/ testing cherry-pick
+            </div>
             <div className={styles["column-wrapper"]}>
                 {columns.map((item) => (
                     <Column key={item.id} {...item} />
