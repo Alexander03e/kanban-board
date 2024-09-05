@@ -32,9 +32,9 @@ export const useMoveElement = <T extends HTMLElement>(
     const initialColumnId = useRef<string>(null);
 
     const mouseStart: PointerEventHandler<HTMLElement> = useCallback((e) => {
-        const { columnId } = getElementUnder(e, DROP_TAG.DROP_CONTAINER);
+        // const { columnId } = getElementUnder(e, DROP_TAG.DROP_CONTAINER);
 
-        initialColumnId.current = columnId;
+        // initialColumnId.current = columnId;
 
         setIsPressed(true);
         console.log("test");
